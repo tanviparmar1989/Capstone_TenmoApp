@@ -12,6 +12,7 @@ import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.User;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @RestController
@@ -34,4 +35,11 @@ public class AccountController {
         BigDecimal balance = accountDAO.getBalance(id);
         return balance;
     }
+
+    @RequestMapping(path = "listusers", method = RequestMethod.GET)
+    public List <User> listUsers() {
+        List<User> users = userDAO.findAll();
+        return users;
+    }
+
 }

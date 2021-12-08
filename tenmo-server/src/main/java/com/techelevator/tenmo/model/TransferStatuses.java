@@ -20,4 +20,5 @@ public class TransferStatuses {
     public void setTransfer_status_desc(String transfer_status_desc) {
         this.transfer_status_desc = transfer_status_desc;
     }
+
 }
