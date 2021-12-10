@@ -1,8 +1,21 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.model.Transfer;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface TransferDao {
 
-    public String sendTransfer(int userFrom, int userTo, BigDecimal amount);
+    void createTransfer(Transfer transfer);
+
+    List<Transfer> getTransfersByUserId(int userId);
+
+    Transfer getTransferByTransferId(int transferId);
+
+    List<Transfer> getAllTransfers();
+
+    List<Transfer> getPendingTransfers(int userId);
+
+    void updateTransfer(Transfer transfer);
 }
