@@ -86,6 +86,8 @@ public class JdbcTransferDao implements TransferDao {
                 "JOIN accounts ON accounts.account_id = transfers.account_from " +
                 "JOIN transfer_statuses ON transfers.transfer_status_id = transfer_statuses.transfer_status_id " +
                 "WHERE user_id = ? AND transfer_status_desc = 'Pending'";
+        // instead of JOINS, use select statement
+        // use IN statement
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         List<Transfer> transfers = new ArrayList<>();
 

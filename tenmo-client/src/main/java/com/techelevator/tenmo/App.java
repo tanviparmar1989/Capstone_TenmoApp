@@ -92,6 +92,8 @@ public class App {
 
     }
 
+
+    //javadoc
     private void viewTransferHistory() {
         Transfer[] transfers = transferService.getTransfersFromUserId(currentUser, currentUser.getUser().getId());
         System.out.println("-------------------------------");
@@ -114,18 +116,21 @@ public class App {
 
     private void viewPendingRequests() {
         Transfer[] transfers = transferService.getPendingTransfersByUserId(currentUser);
+        if (transfers.length == 0) {
+            console.getUserInput("\n You don't have any pending request, press Enter to continue.");
+        }
         System.out.println("-------------------------------");
         System.out.println("Pending Transfers");
         System.out.println("ID          To          Amount");
         System.out.println("-------------------------------");
 
-        for(Transfer transfer: transfers) {
+        for (Transfer transfer : transfers) {
             printTransferStubDetails(currentUser, transfer);
         }
         // TODO ask to view details
         int transferIdChoice = console.getUserInputInteger("\nPlease enter transfer ID to approve/reject (0 to cancel)");
         Transfer transferChoice = validateTransferIdChoice(transferIdChoice, transfers, currentUser);
-        if(transferChoice != null) {
+        if (transferChoice != null) {
             approveOrReject(transferChoice, currentUser);
         }
     }
@@ -336,13 +341,14 @@ public class App {
         }
         return transferChoice;
     }
+
     private void approveOrReject(Transfer pendingTransfer, AuthenticatedUser authenticatedUser) {
         // TODO: write method to approve or reject transfer
         console.printApproveOrRejectOptions();
         int choice = console.getUserInputInteger("Please choose an option");
 
-        if(choice != 0) {
-            if(choice == 1) {
+        if (choice != 0) {
+            if (choice == 1) {
                 int transferStatusId = transferStatusService.getTransferStatus(currentUser, "Approved").getTransferStatusId();
                 pendingTransfer.setTransferStatusId(transferStatusId);
             } else if (choice == 2) {
@@ -355,11 +361,12 @@ public class App {
         }
 
     }
+
     private int getHighestTransferIdNumber() {
         Transfer[] transfers = transferService.getAllTransfers(currentUser);
         int highestTransferIdNumber = 0;
-        for(Transfer transfer: transfers) {
-            if(transfer.getTransferId() > highestTransferIdNumber) {
+        for (Transfer transfer : transfers) {
+            if (transfer.getTransferId() > highestTransferIdNumber) {
                 highestTransferIdNumber = transfer.getTransferId();
             }
         }
