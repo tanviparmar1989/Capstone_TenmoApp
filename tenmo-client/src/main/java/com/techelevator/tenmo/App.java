@@ -113,8 +113,21 @@ public class App {
     }
 
     private void viewPendingRequests() {
-        // TODO Auto-generated method stub
+        Transfer[] transfers = transferService.getPendingTransfersByUserId(currentUser);
+        System.out.println("-------------------------------");
+        System.out.println("Pending Transfers");
+        System.out.println("ID          To          Amount");
+        System.out.println("-------------------------------");
 
+        for(Transfer transfer: transfers) {
+            printTransferStubDetails(currentUser, transfer);
+        }
+        // TODO ask to view details
+        int transferIdChoice = console.getUserInputInteger("\nPlease enter transfer ID to approve/reject (0 to cancel)");
+        Transfer transferChoice = validateTransferIdChoice(transferIdChoice, transfers, currentUser);
+        if(transferChoice != null) {
+            approveOrReject(transferChoice, currentUser);
+        }
     }
 
     private void sendBucks() {
@@ -258,6 +271,7 @@ public class App {
                 System.out.println("Please attempt to login again.");
             }
         }
+        transferIdNumber = getHighestTransferIdNumber() + 1;
     }
 
     private UserCredentials collectUserCredentials() {
@@ -321,6 +335,35 @@ public class App {
             }
         }
         return transferChoice;
+    }
+    private void approveOrReject(Transfer pendingTransfer, AuthenticatedUser authenticatedUser) {
+        // TODO: write method to approve or reject transfer
+        console.printApproveOrRejectOptions();
+        int choice = console.getUserInputInteger("Please choose an option");
+
+        if(choice != 0) {
+            if(choice == 1) {
+                int transferStatusId = transferStatusService.getTransferStatus(currentUser, "Approved").getTransferStatusId();
+                pendingTransfer.setTransferStatusId(transferStatusId);
+            } else if (choice == 2) {
+                int transferStatusId = transferStatusService.getTransferStatus(currentUser, "Rejected").getTransferStatusId();
+                pendingTransfer.setTransferStatusId(transferStatusId);
+            } else {
+                System.out.println("Invalid choice.");
+            }
+            transferService.updateTransfer(currentUser, pendingTransfer);
+        }
+
+    }
+    private int getHighestTransferIdNumber() {
+        Transfer[] transfers = transferService.getAllTransfers(currentUser);
+        int highestTransferIdNumber = 0;
+        for(Transfer transfer: transfers) {
+            if(transfer.getTransferId() > highestTransferIdNumber) {
+                highestTransferIdNumber = transfer.getTransferId();
+            }
+        }
+        return highestTransferIdNumber;
     }
 
 }
