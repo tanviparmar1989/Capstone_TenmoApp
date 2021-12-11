@@ -196,7 +196,13 @@ public class App {
 
 
     private void requestBucks() {
-        // TODO Auto-generated method stub
+        User[] users = userService.getAllUsers(currentUser);
+        printUserOptions(currentUser, users);
+        int userIdChoice = console.getUserInputInteger("Enter ID of user you are requesting from (0 to cancel)");
+        if (validateUserChoice(userIdChoice, users, currentUser)) {
+            String amountChoice = console.getUserInput("Enter amount");
+            createTransfer(userIdChoice, amountChoice, "Request", "Pending");
+        }
 
     }
 

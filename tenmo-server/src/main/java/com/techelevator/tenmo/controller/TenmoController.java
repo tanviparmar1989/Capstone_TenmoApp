@@ -39,6 +39,7 @@ public class TenmoController {
         return userDao.findAll();
     }
 
+    //request bucks
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/transfers/{id}", method = RequestMethod.POST)
     public void addTransfer(@RequestBody Transfer transfer, @PathVariable int id) throws Insufficientfunds {
